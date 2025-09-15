@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Special Birthday Wish</title>
+<style>
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
+  background: url("mera-bg.jfif") no-repeat center center/cover;
+}
+
+.container {
+  text-align: center;
+  color: #fff;
+  position: relative;
+  padding: 15px;
+  max-width: 600px;
+  width: 100%;
+}
+
+/* Fairy light dots */
+.light {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  animation: glow 3s infinite alternate;
+}
+
+@keyframes glow {
+  from { opacity: 0.3; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1.3); }
+}
+
+/* Gift box */
+.gift-box {
+  width: 150px;
+  height: 150px;
+  margin: 20px auto;
+  background: url("gift-white.png") no-repeat center/contain;
+  cursor: pointer;
+  animation: shake 1.2s infinite;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+@keyframes shake {
+  0%, 100% { transform: rotate(0deg); }
+  20% { transform: rotate(-8deg); }
+  40% { transform: rotate(8deg); }
+  60% { transform: rotate(-6deg); }
+  80% { transform: rotate(6deg); }
+}
+
+/* Tasks */
+.task {
+  background: rgba(0,0,0,0.6);
+  border-radius: 12px;
+  padding: 15px;
+  margin: 10px 0;
+  font-size: 18px;
+  box-shadow: 0 0 15px rgba(255,255,255,0.4);
+  animation: fadeIn 1s ease forwards;
+  display: none;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+h1 {
+  font-size: 28px;
+  margin-bottom: 15px;
+  text-shadow: 0 0 10px #ff69b4;
+}
+
+/* Slideshow */
+.slideshow {
+  width: 80%;
+  max-width: 400px;
+  height: 200px;
+  margin: 20px auto;
+  overflow: hidden;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  position: relative;
+}
+
+.slideshow img {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+/* Confetti canvas */
+canvas {
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+}
+
+/* Floating hearts */
+.heart {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: red;
+  transform: rotate(45deg);
+  animation: float 5s linear infinite;
+}
+
+.heart:before,
+.heart:after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: red;
+  border-radius: 50%;
+}
+
+.heart:before {
+  top: -10px;
+  left: 0;
+}
+
+.heart:after {
+  left: 10px;
+  top: 0;
+}
+
+@keyframes float {
+  0% { transform: translateY(0) rotate(45deg); opacity: 1; }
+  100% { transform: translateY(-500px) rotate(45deg); opacity: 0; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .gift-box { width: 120px; height: 120px; }
+  .task { font-size: 14px; padding: 10px; }
+  h1 { font-size: 22px; }
+  .slideshow { height: 150px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🎉 Happy Birthday! 🎂</h1>
+
+  <!-- Gift Box -->
+  <div class="gift-box" id="giftBox"></div>
+
+  <!-- Tasks -->
+  <div class="task" id="task1">💌 Task 1: Smile today, it’s your special day!</div>
+  <div class="task" id="task2">🎶 Task 2: Play your favorite song and dance!</div>
+  <div class="task" id="task3">🍫 Task 3: Treat yourself with something sweet!</div>
+  <div class="task" id="task4">✨ Task 4: Make a wish and believe it will come true!</div>
+
+  <!-- Photo Slideshow -->
+  <div class="slideshow" id="slideshow">
+    <img src="photo1.jpg" style="opacity:1">
+    <img src="photo2.jpg">
+    <img src="photo3.jpg">
+  </div>
+</div>
+
+<!-- Confetti -->
+<canvas id="confetti"></canvas>
+
+<!-- Music -->
+<audio id="bgMusic" src="music.mp3"></audio>
+
+<script>
+// Fairy lights
+for (let i = 0; i < 40; i++) {
+  const light = document.createElement("div");
+  light.classList.add("light");
+  light.style.top = Math.random() * 100 + "%";
+  light.style.left = Math.random() * 100 + "%";
+  light.style.animationDuration = (2 + Math.random() * 3) + "s";
+  document.querySelector(".container").appendChild(light);
+}
+
+// Floating hearts
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.classList.add("heart");
+  heart.style.left = Math.random() * window.innerWidth + "px";
+  heart.style.animationDuration = (3 + Math.random() * 2) + "s";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 5000);
+}
+setInterval(createHeart, 800);
+
+// Gift click
+const giftBox = document.getElementById("giftBox");
+const tasks = [document.getElementById("task1"), document.getElementById("task2"), document.getElementById("task3"), document.getElementById("task4")];
+const bgMusic = document.getElementById("bgMusic");
+let confettiLaunched = false;
+
+giftBox.addEventListener("click", () => {
+  bgMusic.play();
+  giftBox.style.animation = "none";
+  tasks.forEach(t => t.style.display = "block");
+  if (!confettiLaunched) { launchConfetti(); confettiLaunched = true; }
+});
+
+// Confetti
+const confetti = document.getElementById("confetti");
+const ctx = confetti.getContext("2d");
+confetti.width = window.innerWidth;
+confetti.height = window.innerHeight;
+const pieces = [];
+for (let i = 0; i < 150; i++) {
+  pieces.push({x: Math.random() * confetti.width, y: Math.random() * confetti.height, r: Math.random() * 6 + 4, d: Math.random() * 20, color: "hsl(" + Math.random() * 360 + ",100%,50%)", tilt: Math.random() * 10 - 10});
+}
+function drawConfetti() {
+  ctx.clearRect(0,0,confetti.width,confetti.height);
+  pieces.forEach(p => {
+    ctx.beginPath();
+    ctx.lineWidth = p.r;
+    ctx.strokeStyle = p.color;
+    ctx.moveTo(p.x + p.tilt + p.r, p.y);
+    ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r);
+    ctx.stroke();
+  });
+  updateConfetti();
+}
+function updateConfetti() {
+  pieces.forEach(p => { p.y += Math.cos(p.d) + 1 + p.r/2; p.x += Math.sin(p.d); if(p.y>confetti.height){p.y=-10;p.x=Math.random()*confetti.width;} });
+}
+function launchConfetti() { setInterval(drawConfetti,20); }
+
+// Slideshow
+let slideIndex = 0;
+const slides = document.querySelectorAll("#slideshow img");
+function showSlides() {
+  slides.forEach((img, i) => img.style.opacity = "0");
+  slideIndex++;
+  if(slideIndex > slides.length) { slideIndex = 1; }
+  slides[slideIndex-1].style.opacity = "1";
+  setTimeout(showSlides, 3000);
+}
+showSlides();
+</script>
+
+</body>
+</html>
